@@ -59,7 +59,7 @@ variable "admin_password" {
 
 variable "database_host_sku" {
   type    = string
-  default = "GP_Gen5_1"
+  default = "GP_Gen5_2"
 }
 
 variable "database_storage" {
