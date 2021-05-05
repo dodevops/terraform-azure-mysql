@@ -83,5 +83,5 @@ variable "allowed_ips" {
     start = string,
     end   = string
   })
-  default = []
+  default = {}
 }
