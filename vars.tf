@@ -79,9 +79,9 @@ variable "allowed_ips" {
     A hash of permissions to access the database server by ip. The hash key is the name suffix and each value
     has a start and an end value.
   EOF
-  type = object({
+  type = map(object({
     start = string,
     end   = string
-  })
+  }))
   default = {}
 }
