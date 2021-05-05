@@ -41,7 +41,7 @@ variable "backup_retention_days" {
   default     = 7
   validation {
     condition     = var.backup_retention_days >= 7 && var.backup_retention_days <= 35
-    error_message = "Backup retention days has to be between 7 and 35 including"
+    error_message = "Backup retention days has to be between 7 and 35 including."
   }
 }
 
