@@ -45,7 +45,6 @@ variable "backup_retention_days" {
   }
 }
 
-
 variable "admin_login" {
   type        = string
   description = "Admin login"
@@ -58,11 +57,31 @@ variable "admin_password" {
 }
 
 variable "database_host_sku" {
-  type    = string
-  default = "GP_Gen5_2"
+  type        = string
+  default     = "GP_Gen5_2"
+  description = "SKU for the database server to use"
 }
 
 variable "database_storage" {
-  type    = string
-  default = "5120"
+  type        = string
+  default     = "5120"
+  description = "Required database storage (in MB)"
+}
+
+variable "public_access" {
+  description = "Wether to allow public access to the database server"
+  type        = bool
+  default     = false
+}
+
+variable "allowed_ips" {
+  description = <<EOF
+    A hash of permissions to access the database server by ip. The hash key is the name suffix and each value
+    has a start and an end value.
+  EOF
+  type = object({
+    start = string,
+    end   = string
+  })
+  default = []
 }

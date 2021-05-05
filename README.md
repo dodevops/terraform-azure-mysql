@@ -35,6 +35,7 @@ No modules.
 The following resources are used by this module:
 
 - [azurerm_mysql_database.db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_database) (resource)
+- [azurerm_mysql_firewall_rule.firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_firewall_rule) (resource)
 - [azurerm_mysql_server.server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_server) (resource)
 
 ## Required Inputs
@@ -89,6 +90,22 @@ Type: `string`
 
 Default: `"mysqladmin"`
 
+### allowed\_ips
+
+Description:     A hash of permissions to access the database server by ip. The hash key is the name suffix and each value  
+    has a start and an end value.
+
+Type:
+
+```hcl
+object({
+    start = string,
+    end   = string
+  })
+```
+
+Default: `[]`
+
 ### backup\_retention\_days
 
 Description: Number of days to keep backups
@@ -99,15 +116,15 @@ Default: `7`
 
 ### database\_host\_sku
 
-Description: n/a
+Description: SKU for the database server to use
 
 Type: `string`
 
-Default: `"GP_Gen5_1"`
+Default: `"GP_Gen5_2"`
 
 ### database\_storage
 
-Description: n/a
+Description: Required database storage (in MB)
 
 Type: `string`
 
@@ -120,6 +137,14 @@ Description: Database version to use
 Type: `string`
 
 Default: `"8.0"`
+
+### public\_access
+
+Description: Wether to allow public access to the database server
+
+Type: `bool`
+
+Default: `false`
 
 ### suffix
 

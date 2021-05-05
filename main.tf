@@ -14,7 +14,7 @@ resource "azurerm_mysql_server" "server" {
   backup_retention_days             = var.backup_retention_days
   geo_redundant_backup_enabled      = false
   infrastructure_encryption_enabled = true
-  public_network_access_enabled     = false
+  public_network_access_enabled     = var.public_access
   ssl_enforcement_enabled           = true
 }
 
