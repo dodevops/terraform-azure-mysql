@@ -37,6 +37,7 @@ The following resources are used by this module:
 - [azurerm_mysql_database.db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_database) (resource)
 - [azurerm_mysql_firewall_rule.firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_firewall_rule) (resource)
 - [azurerm_mysql_server.server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_server) (resource)
+- [azurerm_mysql_virtual_network_rule.virtualnetworks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_virtual_network_rule) (resource)
 
 ## Required Inputs
 
@@ -98,13 +99,13 @@ Description:     A hash of permissions to access the database server by ip. The 
 Type:
 
 ```hcl
-object({
+map(object({
     start = string,
     end   = string
-  })
+  }))
 ```
 
-Default: `[]`
+Default: `{}`
 
 ### backup\_retention\_days
 
@@ -153,6 +154,14 @@ Description: Naming suffix to allow multiple instances of this module
 Type: `string`
 
 Default: `""`
+
+### virtual\_networks
+
+Description: Maps of prefix => virtual network id that has access to the server
+
+Type: `map(string)`
+
+Default: `{}`
 
 ## Outputs
 
