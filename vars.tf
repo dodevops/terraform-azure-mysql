@@ -86,8 +86,8 @@ variable "allowed_ips" {
   default = {}
 }
 
-variable "virtual_networks" {
+variable "subnets" {
   type        = map(string)
-  description = "Maps of prefix => virtual network id that has access to the server"
+  description = "Maps of prefix => subnet id that has access to the server"
   default     = {}
 }
