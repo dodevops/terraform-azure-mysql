@@ -2,7 +2,12 @@
 
 ## Introduction
 
-This module manages resources for Azure DB for MySQL.
+This module manages resources for Azure DB for MySQL using the flexible server deployment.
+
+More details are available in the following sources:
+
+- [Terraform AzureRM provider flexible server resource type](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server)
+- [Microsoft flexible server documentation](https://learn.microsoft.com/en-us/azure/mysql/flexible-server/)
 
 ## Usage
 
@@ -34,11 +39,12 @@ No modules.
 
 The following resources are used by this module:
 
-- [azurerm_mysql_database.db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_database) (resource)
-- [azurerm_mysql_firewall_rule.firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_firewall_rule) (resource)
-- [azurerm_mysql_server.server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_server) (resource)
-- [azurerm_mysql_virtual_network_rule.virtualnetworks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_virtual_network_rule) (resource)
-- [azurerm_private_endpoint.mysql-private-endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) (resource)
+- [azurerm_mysql_flexible_database.db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_database) (resource)
+- [azurerm_mysql_flexible_server.server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server) (resource)
+- [azurerm_mysql_flexible_server_configuration.configuration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server_configuration) (resource)
+- [azurerm_mysql_flexible_server_configuration.require-secure-transport](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server_configuration) (resource)
+- [azurerm_mysql_flexible_server_configuration.tls-version](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server_configuration) (resource)
+- [azurerm_mysql_flexible_server_firewall_rule.firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server_firewall_rule) (resource)
 
 ## Required Inputs
 
@@ -52,14 +58,13 @@ Type: `string`
 
 ### charset
 
-Description: Charset for the databases, which needs to be a valid PostgreSQL charset
+Description: Charset for the databases, which needs to be a valid MySQL charset
 
 Type: `string`
 
 ### collation
 
-Description:     Collation for the databases, which needs to be a valid PostgreSQL collation. Note that Microsoft uses  
-    different notation - f.e. en-US instead of en\_US
+Description: Charset for the databases, which needs to be a valid MySQL charset
 
 Type: `string`
 
@@ -122,6 +127,14 @@ map(object({
 
 Default: `{}`
 
+### availability\_zone
+
+Description: The availability zone the server will be created in
+
+Type: `string`
+
+Default: `"1"`
+
 ### backup\_retention\_days
 
 Description: Number of days to keep backups
@@ -130,21 +143,45 @@ Type: `number`
 
 Default: `7`
 
+### configurations
+
+Description: Additional MySQL configurations
+
+Type: `map(string)`
+
+Default: `{}`
+
 ### database\_host\_sku
 
 Description: SKU for the database server to use
 
 Type: `string`
 
-Default: `"GP_Gen5_2"`
+Default: `"GP_Standard_D4ds_v4"`
 
-### database\_storage
+### database\_storage\_autogrow
 
-Description: Required database storage (in MB)
+Description: Autogrow storage when limit is reached?
+
+Type: `bool`
+
+Default: `true`
+
+### database\_storage\_iops
+
+Description: IO operations per second
+
+Type: `number`
+
+Default: `3600`
+
+### database\_storage\_size
+
+Description: Required database storage (in GB)
 
 Type: `string`
 
-Default: `"5120"`
+Default: `"20"`
 
 ### database\_version
 
@@ -152,26 +189,43 @@ Description: Database version to use
 
 Type: `string`
 
-Default: `"8.0"`
+Default: `"8.0.21"`
 
-### public\_access
+### delegated\_subnet\_id
 
-Description:     Wether to allow public access to the database server. True will create firewall rules for allowed\_ips and for subnets. False will  
-    create a private endpoint in each given subnet (allowed\_ips will not be used then) - you have to set  
-    enforce\_private\_link\_endpoint\_network\_policies = true on your subnet in this case (see  
-    https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet#enforce_private_link_endpoint_network_policies).
+Description: The id of a subnet that the server will be created in if private-only access is required.  
+This subnet requires a service delegation definition like this:
+```hcl
+  delegation {
+    name = "fs"
+    service_delegation {
+      name = "Microsoft.DBforMySQL/flexibleServers"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
+```
+
+Type: `string`
+
+Default: `null`
+
+### geo\_redundant\_backup\_enabled
+
+Description: Whether backups should be geo redundant
 
 Type: `bool`
 
 Default: `false`
 
-### subnets
+### private\_dns\_zone\_id
 
-Description: Maps of prefix => subnet id that has access to the server
+Description: The id of the private dns zone when using private-only access
 
-Type: `map(string)`
+Type: `string`
 
-Default: `{}`
+Default: `null`
 
 ### suffix
 
