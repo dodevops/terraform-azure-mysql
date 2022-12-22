@@ -1,6 +1,6 @@
 output "server_fqdn" {
   description = "FQDN of the database service"
-  value       = azurerm_mysql_server.server.fqdn
+  value       = azurerm_mysql_flexible_server.server.fqdn
 }
 
 output "admin_login" {
@@ -12,7 +12,7 @@ output "admin_password" {
 }
 
 output "databases" {
-  value = length(azurerm_mysql_database.db) > 0 ? {
-    for index, suffix in var.database_suffixes : suffix => azurerm_mysql_database.db[suffix].name
+  value = length(azurerm_mysql_flexible_database.db) > 0 ? {
+    for index, suffix in var.database_suffixes : suffix => azurerm_mysql_flexible_database.db[suffix].name
   } : {}
 }
