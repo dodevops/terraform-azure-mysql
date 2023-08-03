@@ -93,8 +93,10 @@ variable "database_storage_iops" {
 variable "allowed_ips" {
   description = <<EOF
     A hash of permissions to access the database server by ip. The hash key is the name suffix and each value
-    has a start and an end value. For public access set start_ip_address to 0.0.0.0 and end_ip_address to
-    255.255.255.255. This variable is not used if public_access = false.
+    has a start and an end value.
+
+    * For public access set start to 0.0.0.0 and end to 255.255.255.255
+    * To allow access from all Azure services to this database, set start and end to 0.0.0.0
   EOF
   type = map(object({
     start = string,
