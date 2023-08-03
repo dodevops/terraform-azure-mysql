@@ -1,5 +1,5 @@
 resource "azurerm_mysql_flexible_server" "server" {
-  name                   = "${var.project}${var.stage}dbsrv"
+  name                   = "${var.project}${var.stage}dbsrv${var.suffix}"
   location               = var.location
   resource_group_name    = var.resource_group
   administrator_login    = var.admin_login

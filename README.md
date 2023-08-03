@@ -23,13 +23,17 @@ module "azure-mysql" {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- terraform (>=1.0.0)
+
+- azurerm (>=3.63.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- azurerm
+- azurerm (>=3.63.0)
 
 ## Modules
 
@@ -113,8 +117,10 @@ Default: `"mysqladmin"`
 ### allowed\_ips
 
 Description:     A hash of permissions to access the database server by ip. The hash key is the name suffix and each value  
-    has a start and an end value. For public access set start\_ip\_address to 0.0.0.0 and end\_ip\_address to  
-    255.255.255.255. This variable is not used if public\_access = false.
+    has a start and an end value.
+
+    * For public access set start to 0.0.0.0 and end to 255.255.255.255
+    * To allow access from all Azure services to this database, set start and end to 0.0.0.0
 
 Type:
 
@@ -258,7 +264,6 @@ Description: FQDN of the database service
 
 ## Development
 
-Use [terraform-docs](https://terraform-docs.io/) to generate the API documentation by running
+Use [the terraform module tools](https://github.com/dodevops/terraform-module-tools) to check and generate the documentation by running
 
-    terraform fmt .
-    terraform-docs .
+    docker run -v "$PWD":/terraform ghcr.io/dodevops/terraform-module-tools:latest
