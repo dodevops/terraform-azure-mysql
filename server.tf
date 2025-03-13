@@ -6,9 +6,10 @@ resource "azurerm_mysql_flexible_server" "server" {
   administrator_password = var.admin_password
   sku_name               = var.database_host_sku
   storage {
-    size_gb           = var.database_storage_size
-    auto_grow_enabled = var.database_storage_autogrow
-    iops              = var.database_storage_iops
+    size_gb            = var.database_storage_size
+    auto_grow_enabled  = var.database_storage_autogrow
+    iops               = var.database_storage_io_scaling_enabled != true ? var.database_storage_iops : null
+    io_scaling_enabled = var.database_storage_io_scaling_enabled
   }
   version               = var.database_version
   backup_retention_days = var.backup_retention_days

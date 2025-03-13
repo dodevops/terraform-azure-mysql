@@ -173,9 +173,17 @@ Type: `bool`
 
 Default: `true`
 
+### database\_storage\_io\_scaling\_enabled
+
+Description: Enables IOPS auto scaling. If true, database\_storage\_iops will be ignored
+
+Type: `bool`
+
+Default: `false`
+
 ### database\_storage\_iops
 
-Description: IO operations per second
+Description: IO operations per second. If database\_storage\_io\_scaling\_enabled is true, this variable will be ignored
 
 Type: `number`
 
