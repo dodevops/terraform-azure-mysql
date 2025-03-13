@@ -87,7 +87,13 @@ variable "database_storage_autogrow" {
 variable "database_storage_iops" {
   type        = number
   default     = 3600
-  description = "IO operations per second"
+  description = "IO operations per second. If database_storage_io_scaling_enabled is true, this variable will be ignored"
+}
+
+variable "database_storage_io_scaling_enabled" {
+  type        = bool
+  default     = false
+  description = "Enables IOPS auto scaling. If true, database_storage_iops will be ignored"
 }
 
 variable "allowed_ips" {
